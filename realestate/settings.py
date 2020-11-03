@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'cloudinary',
 
     'estateapp',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -82,8 +83,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'realestate',
-        'USER': 'siderra',
-        'PASSWORD':'friday',
+        'USER': 'kaycee',
+        'PASSWORD':'password',
     }
 }
 
