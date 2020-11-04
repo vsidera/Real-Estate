@@ -1,14 +1,10 @@
 from django.urls import path,include
-from rest_framework import routers
 from . import views
+from rest_framework.authtoken.views import obtain_auth_token
+from rest_framework_simplejwt import views as jwt_views
 
-router = routers.DefaultRouter()
-router.register('profile', views.ProfileViewSet)
-router.register('listing', views.ListingViewSet)
-
-urlpatterns=[
-    path('',views.welcome,name = 'welcome'),
-    path('api/', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-
+urlpatterns = [
+    path('hello/', views.HelloView.as_view(), name='hello'),
+    path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
 ]

@@ -1,18 +1,16 @@
 from django.shortcuts import render
 from django.http  import HttpResponse
 from .serializers import ProfileSerializer, ListingSerializer
-from rest_framework import viewsets
-from rest_framework import permissions
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from .models import Profile, Listing
+from rest_framework.permissions import IsAuthenticated
+
 # Create your views here.
 
-def welcome(request):
-    return HttpResponse('Welcome to Real Estate')
+class HelloView(APIView):
+    permission_classes = (IsAuthenticated,) 
+    def get(self, request):
 
-class ProfileViewSet(viewsets.ModelViewSet):
-    queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
-
-class ListingViewSet(viewsets.ModelViewSet):
-    queryset = Listing.objects.all()
-    serializer_class = ListingSerializer
+        content = {'message': 'Hello, World!'}
+        return Response(content)
