@@ -8,11 +8,11 @@ from django.conf import settings
 class User(AbstractUser):
     
     USER_ROLES = (
-        (1, 'COMPANY ADMIN'),
-        (2, 'NORMAL USER')        
+        ('CA', 'COMPANY ADMIN'),
+        ('NU', 'NORMAL USER')        
     )
     role = models.CharField(
-        verbose_name='user role', max_length=2, choices=USER_ROLES
+        verbose_name='user role', max_length=2, choices=USER_ROLES,default='NU'
     )
 
 class Profile(models.Model):

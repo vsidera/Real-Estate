@@ -28,9 +28,11 @@ def registration_view(request):
     return Response(data)
 
 class HelloView(APIView):
-    permission_classes = (IsAuthenticated,IsNormalUser) 
+    permission_classes = (IsAuthenticated,IsCompanyAdmin) 
     def get(self, request):
-        
         content = {'message': 'Hello, World!'}
         return Response(content)
+
+
+
 
