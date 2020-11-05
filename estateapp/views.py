@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 from .models import Profile, Listing
+from .permissions import IsCompanyAdmin, IsNormalUser
 from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
@@ -20,15 +21,18 @@ def registration_view(request):
         data['response'] = "success registration"
         data['email'] = user.email
         data['username'] = user.username
+        data['role'] = user.role
     else:
-        data = serializer
+        data = serializer.errors
     
     return Response(data)
 
 class HelloView(APIView):
-    permission_classes = (IsAuthenticated,) 
+    permission_classes = (IsAuthenticated,IsCompanyAdmin) 
     def get(self, request):
-
         content = {'message': 'Hello, World!'}
         return Response(content)
+
+
+
 
