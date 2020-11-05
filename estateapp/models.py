@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.conf import settings
+
 class User(AbstractUser):
     
     USER_ROLES = (
@@ -59,6 +60,13 @@ class Enquiry(models.Model):
 
     Message = models.IntegerField()
     User = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='enquirer')
+
+class Tours(models.Model):
+    ''' a model for Tours '''
+
+    day = models.IntegerField()
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='visitor')
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='house')
    
 
         
