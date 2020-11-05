@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Profile, Listing
+from .models import Profile, Listing, Tours
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
@@ -38,5 +38,11 @@ class ListingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Listing
         fields = ['id', 'Location', 'Price', 'Realtor', 'Image1', 'Image2', 'Image3', 'Image4','Bedrooms','Bathrooms']
+
+class ToursSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tours
+        fields = ['id','day', 'user','listing']
+
 
  
