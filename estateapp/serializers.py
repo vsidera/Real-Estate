@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Profile, Listing
+from .models import Profile, Listing, Enquiry
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
@@ -39,4 +39,7 @@ class ListingSerializer(serializers.ModelSerializer):
         model = Listing
         fields = ['id', 'Location', 'Price', 'Realtor', 'Image1', 'Image2', 'Image3', 'Image4','Bedrooms','Bathrooms']
 
- 
+class EnquirySerializer(serializers.ModelSerializer):
+    class Meta:
+        models = Enquiry
+        fields = ['id','Message']
