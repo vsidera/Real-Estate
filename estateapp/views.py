@@ -3,10 +3,13 @@ from .serializers import RegistrationSerializer, ProfileSerializer, ListingSeria
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.decorators import api_view,permission_classes
-from .models import Profile, Listing, Bid, User, Tours,Enquiry
+from rest_framework.decorators import api_view
+from .models import Profile, Listing, Tours, User, Enquiry
 from .permissions import IsCompanyAdmin, IsNormalUser
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import filters
+from rest_framework import generics
+
 # Create your views here.
 class RegisterView(APIView):
     def post(self, request, format=None):
@@ -97,7 +100,7 @@ class BidView(APIView):
             serializer = BidSerializer(bid_post,many=True)
             return Response(serializer.data)
 class ToursView(APIView):
-    permission_classes = (IsAuthenticated,IsCompanyAdmin)
+    
     def get(self, request, format=None):
         all_tours = Tours.objects.all()
         serializers = ToursSerializer(all_tours, many=True)
@@ -109,30 +112,32 @@ class ToursView(APIView):
             return Response(serializers.data, status=status.HTTP_201_CREATED)
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 class ToursDetail(APIView):
-    permission_classes = (IsAuthenticated,IsCompanyAdmin)
-    def get_tour(self, pk):
+    
+    def get_tours(self, pk):
         try:
             return Tours.objects.get(pk=pk)
         except Tours.DoesNotExist:
-            return Http404
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
     def get(self, request, pk, format=None):
-        tour = self.get_tour(pk)
-        serializers = ToursSerializer(tour)
-        return Response(serializers.data)
+        tours = self.get_tours(pk)
+        serializers = ToursSerializer(tours)
+        return Response(serializers.data)     
+ 
     def put(self, request, pk, format=None):
-        tour = self.get_tour(pk)
-        serializers = ToursSerializer(tour, request.data)
+        tours = self.get_tours(pk)
+        serializers = ToursSerializer(tours, request.data)
         if serializers.is_valid():
             serializers.save()
             return Response(serializers.data)
         else:
             return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
     def delete(self, request, pk, format=None):
-        tour = self.get_tour(pk)
-        tour.delete()
+        tours = self.get_tours(pk)
+        tours.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 class EnquiryView(APIView):
-    permission_classes = (IsAuthenticated,IsCompanyAdmin)
+    # permission_classes = (IsAuthenticated,IsCompanyAdmin)
     def get(self, request, format=None):
         all_enquiries = Enquiry.objects.all()
         serializers = EnquirySerializer(all_enquiries, many=True)
@@ -151,7 +156,7 @@ class EnquiryDetail(APIView):
         except Enquiry.DoesNotExist:
             return Http404
     def get(self, request, pk, format=None):
-        tour = self.get_tour(pk)
+        enquiry = self.get_enquiry(pk)
         serializers = EnquirySerializer(enquiry)
         return Response(serializers.data)
     def put(self, request, pk, format=None):
