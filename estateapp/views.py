@@ -22,3 +22,14 @@ class RegisterView(APIView):
         else:
             data = serializer.errors
         return Response(data)
+
+class ListingView(APIView):
+    permission_classes = (IsAuthenticated,IsCompanyAdmin)
+    def post(self, request, format=None):
+        if request.method == 'POST':
+            serializer = ListingSerializer(data=request.data)
+            data = {}
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
