@@ -81,11 +81,15 @@ WSGI_APPLICATION = 'realestate.wsgi.application'
 
 DATABASES = {
     'default': {
+
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'realestate',
-        'USER': 'kaycee',
-        'PASSWORD':'password',
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD':os.environ.get('DB_PASSWORD'),
+        'HOST':os.environ.get('DB_HOST'),
+        'PORT':os.environ.get('DB_PORT', 5432)
     }
+
 }
 
 # Password validation
@@ -132,3 +136,11 @@ cloudinary.config(
     api_key=os.environ.get('API_KEY'),
     api_secret=os.environ.get('API_SECRET')
 )
+
+AUTH_USER_MODEL ='estateapp.User'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}

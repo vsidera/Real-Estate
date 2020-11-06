@@ -1,4 +1,5 @@
 venv/
+virtual/
 .env
 env.sh
 .vscode
