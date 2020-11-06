@@ -98,3 +98,16 @@ class BidView(APIView):
         if request.method == 'GET':
             serializer = BidSerializer(bid_post,many=True)
             return Response(serializer.data)
+
+class ToursView(APIView):
+    permission_classes = (IsAuthenticated,IsCompanyAdmin)
+    def get(self, request, format=None):
+        all_tours = Tours.objects.all()
+        serializers = ToursSerializer(all_tours, many=True)
+        return Response(serializers.data)
+    def post(self, request, format=None):
+        serializers = ToursSerializer(data=request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
