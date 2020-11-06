@@ -27,4 +27,16 @@ class Profile(models.Model):
                 Profile.objects.create(user=instance)
     @receiver(post_save, sender=User)
     def save_user_profile(sender, instance, **kwargs):
-            instance.profile.save()    
+            instance.profile.save()  
+
+class Listing(models.Model):
+    ''' a model for Listing '''
+    Location = models.CharField(max_length=150)
+    Price = models.IntegerField()
+    Realtor = models.CharField(max_length=150)
+    Image1 = CloudinaryField('image')
+    Image2 = CloudinaryField('image')
+    Image3 = CloudinaryField('image')
+    Image4 = CloudinaryField('image')
+    Bedrooms = models.IntegerField()
+    Bathrooms = models.IntegerField()
