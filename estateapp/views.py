@@ -1,11 +1,11 @@
 from django.shortcuts import render
 from django.http  import HttpResponse
-from .serializers import RegistrationSerializer, ProfileSerializer, ListingSerializer, ToursSerializer
+from .serializers import RegistrationSerializer, ProfileSerializer, ListingSerializer, ToursSerializer,EnquirySerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
-from .models import Profile, Listing, Tours
+from .models import Profile, Listing, Tours,Enquiry
 from .permissions import IsCompanyAdmin, IsNormalUser
 from rest_framework.permissions import IsAuthenticated
 
@@ -72,6 +72,47 @@ class ToursDetail(APIView):
     def delete(self, request, pk, format=None):
         tour = self.get_tour(pk)
         tour.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class EnquiryView(APIView):
+    permission_classes = (IsAuthenticated,IsCompanyAdmin)
+    def get(self, request, format=None):
+        all_enquiries = Enquiry.objects.all()
+        serializers = EnquirySerializer(all_enquiries, many=True)
+        return Response(serializers.data)
+    
+    def post(self, request, format=None):
+        serializers = EnquirySerializer(data=request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)   
+
+class EnquiryDetail(APIView):
+    permission_classes = (IsAuthenticated,IsCompanyAdmin) 
+    def get_enquiry(self, pk):
+        try:
+            return Enquiry.objects.get(pk=pk)
+        except Enquiry.DoesNotExist:
+            return Http404
+
+    def get(self, request, pk, format=None):
+        tour = self.get_tour(pk)
+        serializers = EnquirySerializer(enquiry)
+        return Response(serializers.data)     
+ 
+    def put(self, request, pk, format=None):
+        enquiry = self.get_enquiry(pk)
+        serializers = EnquirySerializer(enquiry, request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data)
+        else:
+            return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        enquiry = self.get_enquiry(pk)
+        enquiry.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 

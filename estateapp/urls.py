@@ -10,4 +10,7 @@ urlpatterns = [
     path('register/', views.registration_view, name="register"),
     path('api/tours/', views.ToursView.as_view()),
     path('api/tours/tour-id/int:<pk>/', views.ToursDetail.as_view()),
+    path('api/enquiry/', views.EnquiryView.as_view()),
+    path('api/enquiry/enquiry-id/int:<pk>/', views.EnquiryDetail.as_view()),
 ]
+
