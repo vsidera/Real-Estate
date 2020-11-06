@@ -61,3 +61,40 @@ class UserView(APIView):
         if request.method == 'GET':
             serializer = UserSerializer(users, many=True)
             return Response(serializer.data)
+
+class BidView(APIView):
+    permission_classes = (IsAuthenticated,IsCompanyAdmin)
+    def post(request,id):
+        try:
+            listing_post = Listing.objects.get(id=id)
+        except Listing.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        if request.method == 'POST':
+            serializer = BidAdminSerializer(data=request.data)
+            data = {}
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    permission_classes = (IsAuthenticated,IsNormalUser)
+    def put(request, id):
+        try:
+            bid_post = Bid.objects.get(id=id)
+        except Bid.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        if request.method == 'PUT':
+            serializer = BidListingSerializer(bid_post,data=request.data)
+            data = {}
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+        return Response(serializer.erroBidListingSerializerrs,status=status.HTTP_400_BAD_REQUEST)
+    permission_classes = (IsAuthenticated,IsNormalUser)
+    def get(request):
+        try:
+            bid_post = Bid.objects.all()
+        except Bid.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        if request.method == 'GET':
+            serializer = BidSerializer(bid_post,many=True)
+            return Response(serializer.data)
