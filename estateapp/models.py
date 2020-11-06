@@ -40,3 +40,11 @@ class Listing(models.Model):
     Image4 = CloudinaryField('image')
     Bedrooms = models.IntegerField()
     Bathrooms = models.IntegerField()
+
+class Bid(models.Model):
+    ''' a model for Listing '''
+    Bidamount = models.IntegerField(null=True)
+    AuctionDate = models.DateField(null=True)
+    CurrentAmount = models.IntegerField(null=True)
+    User = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bidder',null=True)
+    Listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='listing',null=True)
