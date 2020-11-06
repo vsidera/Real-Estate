@@ -5,11 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
-<<<<<<< HEAD
-from .models import Profile, Listing, Tours, User
-=======
-from .models import Profile, Listing, Tours,Enquiry
->>>>>>> c51213eb391faa1ee78135ca325fdd0aedee62ec
+from .models import Profile, Listing, Tours, User, Enquiry
 from .permissions import IsCompanyAdmin, IsNormalUser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import filters
@@ -59,7 +55,7 @@ class ToursDetail(APIView):
         try:
             return Tours.objects.get(pk=pk)
         except Tours.DoesNotExist:
-            return Http404
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     def get(self, request, pk, format=None):
         tours = self.get_tours(pk)
@@ -81,7 +77,7 @@ class ToursDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class EnquiryView(APIView):
-    permission_classes = (IsAuthenticated,IsCompanyAdmin)
+    # permission_classes = (IsAuthenticated,IsCompanyAdmin)
     def get(self, request, format=None):
         all_enquiries = Enquiry.objects.all()
         serializers = EnquirySerializer(all_enquiries, many=True)
@@ -95,7 +91,7 @@ class EnquiryView(APIView):
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)   
 
 class EnquiryDetail(APIView):
-    permission_classes = (IsAuthenticated,IsCompanyAdmin) 
+    # permission_classes = (IsAuthenticated,IsCompanyAdmin) 
     def get_enquiry(self, pk):
         try:
             return Enquiry.objects.get(pk=pk)
@@ -103,7 +99,7 @@ class EnquiryDetail(APIView):
             return Http404
 
     def get(self, request, pk, format=None):
-        tour = self.get_tour(pk)
+        enquiry = self.get_enquiry(pk)
         serializers = EnquirySerializer(enquiry)
         return Response(serializers.data)     
  

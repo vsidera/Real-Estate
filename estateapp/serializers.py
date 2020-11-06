@@ -47,4 +47,4 @@ class ToursSerializer(serializers.ModelSerializer):
 class EnquirySerializer(serializers.ModelSerializer):
     class Meta:
         model = Enquiry
-        fields = ['id','user','message']
+        fields = ['id','User','Message']
