@@ -33,3 +33,22 @@ class ListingView(APIView):
                 serializer.save()
                 return Response(serializer.data)
             return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+            
+    permission_classes = (IsAuthenticated,IsNormalUser)
+    def get(request):
+        try:
+            listing_post = Listing.objects.all()
+        except Listing.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        if request.method == 'GET':
+            serializer = ListingSerializer(listing_post, many=True)
+            return Response(serializer.data)
+    permission_classes = (IsAuthenticated,IsNormalUser)
+    def get(request,id):
+        try:
+            listing_post = Listing.objects.get(id=id)
+        except Listing.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        if request.method == 'GET':
+            serializer = ListingSerializer(listing_post)
+            return Response(serializer.data)
