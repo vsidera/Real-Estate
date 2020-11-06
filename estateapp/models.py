@@ -58,7 +58,7 @@ class Bid(models.Model):
 class Enquiry(models.Model):
     ''' a model for Listing '''
 
-    Message = models.IntegerField()
+    Message = models.CharField(max_length=150)
     User = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='enquirer')
 
 class Tours(models.Model):

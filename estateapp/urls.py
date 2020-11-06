@@ -10,7 +10,8 @@ urlpatterns = [
     path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     path('register/', views.registration_view, name="register"),
     path('api/tours/', views.ToursView.as_view()),
-    url(r'api/tours/tours-id/(?P<pk>[0-9]+)/$',
-        views.ToursDetail.as_view()),
-    path('api/search/', views.UserListView.as_view()),    
+    path('api/tours/tour-id/int:<pk>/', views.ToursDetail.as_view()),
+    path('api/enquiry/', views.EnquiryView.as_view()),
+    path('api/enquiry/enquiry-id/int:<pk>/', views.EnquiryDetail.as_view()),
 ]
+
