@@ -48,3 +48,13 @@ class Bid(models.Model):
     CurrentAmount = models.IntegerField(null=True)
     User = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bidder',null=True)
     Listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='listing',null=True)
+
+class Enquiry(models.Model):
+    ''' a model for Listing '''
+    Message = models.IntegerField()
+    User = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='enquirer')
+class Tours(models.Model):
+    ''' a model for Tours '''
+    day = models.IntegerField()
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='visitor')
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='house')    
